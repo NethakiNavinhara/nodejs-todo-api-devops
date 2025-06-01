@@ -4,12 +4,12 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'npm install'
+        bat 'npm install'
       }
     }
     stage('Test') {
       steps {
-        sh 'npm test'
+        bat 'npm test'
       }
     }
     stage('Code Quality') {
@@ -19,22 +19,22 @@ pipeline {
     }
     stage('Security') {
       steps {
-        sh 'npm audit || true'
+        bat 'npm audit || exit 0'
       }
     }
     stage('Deploy') {
       steps {
-        sh 'docker build -t node-todo-app .'
+        bat 'docker build -t node-todo-app .'
       }
     }
     stage('Release') {
       steps {
-        sh 'git tag -a v1.0.0 -m "Release v1.0.0" || true'
+        bat 'git tag -a v1.0.0 -m "Release v1.0.0" || exit 0'
       }
     }
     stage('Monitoring') {
       steps {
-        echo 'Health check endpoint is available at /health'
+        echo 'Health check endpoint is available at http://localhost:3000/health'
       }
     }
   }
